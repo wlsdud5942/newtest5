@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 import cv2
 import rclpy
@@ -22,6 +21,9 @@ class QCarDetectionNode(Node):
             '/camera/color_image',  # QCar2 RGBD 컬러 스트림
             self.image_callback,
             10)
+        
+        self.stop_detected_count = 0
+        self.THRESHOLD = 10
 
         # stop 검지 여부 퍼블리시 (1/0)image_raw
         self.int_publisher = self.create_publisher(Int32, '/stop', 10)
@@ -61,18 +63,28 @@ class QCarDetectionNode(Node):
         results = self.model(self.latest_frame, imgsz=(480, 640), conf=0.6)
 
         # 감지된 클래스 번호 집합으로 수집
+                # 감지된 클래스 번호 집합으로 수집
         detected_cls = set()
         for r in results:
             for cls_idx in r.boxes.cls:
                 detected_cls.add(int(cls_idx))
 
-        # 클래스 0 , 1, 2(stop) 처리: 1 or 0
-        stop_detected = int(any(cls in detected_cls for cls in [0, 1, 2]))
+        # 클래스 0, 1, 2 감지 여부
+        detected = any(cls in detected_cls for cls in [0, 1, 2])
+
+        # 연속 감지 프레임 수 업데이트
+        if detected:
+            self.stop_detected_count += 1
+        else:
+            self.stop_detected_count = 0
+
+        # 기준 초과 시 정지신호, 아니면 0
+        stop_output = 1 if self.stop_detected_count >= self.THRESHOLD else 0
         msg_int = Int32()
-        msg_int.data = stop_detected
+        msg_int.data = stop_output
         self.int_publisher.publish(msg_int)
 
-        self.get_logger().info(f"Stop-related class(0/1/2) detected: {msg_int.data}")
+        self.get_logger().info(f"[Frame {self.stop_detected_count}] Stop signal: {msg_int.data}")
 
 def main(args=None):
     rclpy.init(args=args)
