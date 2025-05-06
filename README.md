@@ -75,3 +75,22 @@ Click on each link to directly navigate to the corresponding folder containing t
 > ⚠️ Launching Cartographer before the others may result in incorrect TF tree initialization or data synchronization issues.
 5. All `launch`, `build`, and `install` files are included within the `ros2` folder.
 
+---
+
+### Launch Order
+
+1. `ros2 launch qcar2_nodes Cartographer_localization.py`  
+   *Wait until Cartographer completes localization.*
+
+2. `ros2 run path_planning stopper`
+
+3. `ros2 run yolo_detection yolo_node.py`
+
+4. `ros2 launch lane_detection lane_detection_launch.py`
+
+5. **Run Simulink model**  
+   *(Start the Simulink control model before proceeding to the next steps.)*
+
+6. `ros2 run util waypointSaver.py`
+
+7. `ros2 launch util util_launch.py`
