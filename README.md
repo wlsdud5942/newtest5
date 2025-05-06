@@ -77,20 +77,17 @@ Click on each link to directly navigate to the corresponding folder containing t
 
 ---
 
-### Launch Order
+###Launch Order
+Step1.  ros2 launch qcar2_nodes/launch
+Cartographer_localization.py
+(Wait until Cartographer has localized successfully.)
 
-1. `ros2 launch qcar2_nodes Cartographer_localization.py`  
-   *Wait until Cartographer completes localization.*
+Step2. ros2 run yolo_detection/scr
+yolo_node.py
 
-2. `ros2 run path_planning stopper`
+Step3. ros2 run  launch lane_detection /launch
+lane_detection_launch.py
 
-3. `ros2 run yolo_detection yolo_node.py`
-
-4. `ros2 launch lane_detection lane_detection_launch.py`
-
-5. **Run Simulink model**  
-   *(Start the Simulink control model before proceeding to the next steps.)*
-
-6. `ros2 run util waypointSaver.py`
-
-7. `ros2 launch util util_launch.py`
+Step4. 
+**Run Simulink model**  
+*(Start the Simulink control model before proceeding to the next steps.)*
