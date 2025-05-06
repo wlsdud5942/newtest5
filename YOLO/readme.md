@@ -33,7 +33,8 @@ The dataset focuses on five key traffic object classes relevant to the driving t
 Additional dataset details:
 
 - Label format complies with YOLO convention: `<class> <x_center> <y_center> <width> <height>`  
-- Dataset is split: 80% for training and 20% for validation  
+- Dataset is split: 80% for training and 20% for validation, Testing was conducted directly within the QLabs simulation environment,  
+so a separate test dataset was not included.
 - All labels are normalized with respect to image width and height  
 
 ---
