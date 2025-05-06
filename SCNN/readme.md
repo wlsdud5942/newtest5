@@ -38,7 +38,8 @@ The dataset was created from QLab driving footage. Each input RGB image is paire
 - Lane pixels are white, background is black  
 - Only lane markings are labeled in the mask  
 - All labels follow a binary (0/1) convention for semantic segmentation  
-- Dataset is split 80% for training, 20% for validation
+- Dataset is split 80% for training, 20% for validation, Testing was conducted directly within the QLabs simulation environment,  
+so a separate test dataset was not included.
 
 <table>
   <tr>
